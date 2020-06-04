@@ -50,7 +50,7 @@ def main():
     if (ircmsg.strip() != ""):
         print(ircmsg)
 
-    # TODO: Use eval('text') to run code an a file that can be stopped without having to rejoin the IRC server
+    # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
 
     if ircmsg.find("PRIVMSG") != -1:
       name = ircmsg.split('!',1)[0][1:]
