@@ -85,7 +85,8 @@ def main():
           print("printing date")
           sendmsg(getdate.printdaynumber())
 
-        # TODO - .dodongo
+        if message.find(".dodongo") != -1:
+          sendmsg("!lol dodongo")
 
         if message.find(".fortune") != -1:
           print("printing fortune")
