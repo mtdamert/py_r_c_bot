@@ -18,11 +18,11 @@ def getmonthstr(monthnum):
     return switcher.get(monthnum, "Invalid month")
 
 def getordinalnumberstr(num):
-  if num % 10 == 1:
+  if num % 10 == 1 and num != 11:
     return str(num) + "st"
-  elif num % 10 == 2:
+  elif num % 10 == 2 and num != 12:
     return str(num) + "nd"
-  elif num % 10 == 3:
+  elif num % 10 == 3 and num != 13:
     return str(num) + "rd"
   else:
     return str(num) + "th"
