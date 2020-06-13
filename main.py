@@ -60,13 +60,12 @@ def main():
         # respond to 'hi <botname>'
         if message.find('hi ' + botnick.lower()) != -1 or message.find('hello ' + botnick.lower()) != -1 or message.find('hey ' + botnick.lower()) != -1:
           sendmsg("Hello " + name + "!")
-        elif message.find(botnick.lower):
-          sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
         elif name.lower() == adminname.lower() and message.rstrip() == exitcode: # quit with <exitcode>
           sendmsg("oh...okay. :-/")
-          time.sleep(1)
           ircsock.send(bytes("QUIT\n", "UTF-8"))
           return
+        elif message.find(botnick.lower()) != -1:
+          sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
         # use '.tell' to send someone a message
         if message.find('.tell') != -1:
