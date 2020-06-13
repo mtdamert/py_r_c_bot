@@ -96,7 +96,8 @@ def main():
           sendmsg(getskdtheme.printskdtheme())
 
         if message.find('.hotdog') != -1:
-          print('( ´∀｀)つ―⊂ZZZ⊃')
+          print('printing a hotdog')
+          sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
         if message.find(".weather") != -1: #TODO - .weather <place>
           print("printing weather")
