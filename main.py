@@ -99,9 +99,9 @@ def main():
           print('printing a hotdog')
           sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
-        if message.find(".weather") != -1: #TODO - .weather <place>
+        if message.find(".weather") != -1:
           print("printing weather")
-          sendmsg(getweather.printweather())
+          sendmsg(getweather.printweather(message[(len(".weather") + message.find(".weather")):]))
 
         # list of commands
         if message.find('.help') != -1:
