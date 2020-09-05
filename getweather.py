@@ -18,7 +18,7 @@ def printweather(lat, lon):
         c = (wData['current']['temp']-32)/1.8
         c = format(c, ',.2f')
         cFeels = (wData['current']['feels_like']-32)/1.8
-        cFeels = format(c, ',.2f')
+        cFeels = format(cFeels, ',.2f')
         return f"{wData['current']['temp']} fahrenheit ({c}c). {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit ({cFeels}c). Generally: {wData['current']['weather'][0]['description']}."
     except:
         return "Something went wrong."
