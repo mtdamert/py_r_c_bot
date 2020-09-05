@@ -15,7 +15,11 @@ def printweather(lat, lon):
         # print(readableData) #prints very poorly
         # below is human readable
         # print(json.dumps(wData, indent=4, sort_keys=True))
-        return f"{wData['current']['temp']} fahrenheit. {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit. Generally: {wData['current']['weather'][0]['description']}."
+        c = (wData['current']['temp']-32)/1.8
+        c = format(c, ',.2f')
+        cFeels = (wData['current']['feels_like']-32)/1.8
+        cFeels = format(c, ',.2f')
+        return f"{wData['current']['temp']} fahrenheit ({c}c). {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit ({cFeels}c). Generally: {wData['current']['weather'][0]['description']}."
     except:
         return "Something went wrong."
 
