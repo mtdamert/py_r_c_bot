@@ -154,20 +154,43 @@ def main():
                     else:
                         sendmsg('.covid <zipcode/countrycode>')
 
-                if message.find(".weather") != -1:  # TODO - .weather <place>
-                    print("printing weather")
+                if message.find(".addloc") == 0:
                     splitmsg = message.split(' ')
-                    lat = 0
-                    lon = 0
+                    splitmsg.pop(0)
+                    splitmsg = ' '.join(splitmsg).split(', ')
                     if len(splitmsg) == 3:
                         try:
-                            lat = int(splitmsg[1])
-                            lon = int(splitmsg[2])
+                            city = splitmsg[0]
+                            lat = float(splitmsg[1])
+                            lon = float(splitmsg[2])
+                            getweather.addLocation(city, lat, lon)
+                            sendmsg('location added')
+                        except:
+                            sendmsg('Something went wrong')
+                    else:
+                        sendmsg('.addloc <location name>, <lat>, <lon>')
+
+                if message.find(".weather") == 0:
+                    print("printing weather")
+                    splitmsg = message.split(' ')
+                    splitmsg.pop(0)
+                    splitmsg = ' '.join(splitmsg).split(', ')
+                    lat = 0
+                    lon = 0
+                    print(splitmsg)
+                    if len(splitmsg) == 1:
+                        loc = splitmsg[0]
+                        sendmsg(getweather.printweather(loc, 0))
+                    elif len(splitmsg) == 2:
+                        try:
+                            lat = int(splitmsg[0])
+                            lon = int(splitmsg[1])
                             sendmsg(getweather.printweather(lat, lon))
                         except ValueError:
                             sendmsg("I couldn't do that!")
                     else:
-                        sendmsg('.weather <latitude> <longitude>')
+                        sendmsg(
+                            '.weather <location name> OR <latitude>, <longitude>')
 
                 # if message.find(".fortune") == 0: #this prevents bot from running
                 #     print("printing fortune")
@@ -189,7 +212,7 @@ def main():
                 # list of commands
                 if message.find('.help') == 0:
                     sendmsg(
-                        "COMMANDS: .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
+                        "COMMANDS: .addloc .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
 
         else:
             if ircmsg.find("PING :") != -1:

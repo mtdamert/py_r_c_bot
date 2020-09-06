@@ -5,9 +5,61 @@ import json
 # locationDict = { "LA": { "lat": 0, "lon": 0}}
 
 
+locationDict = {
+    "ny": {
+        "lat": 40,
+        "lon": -73
+    },
+}
+
+
+def loadLocations():
+    loc_file = open("locs.txt", "r")
+    for line in loc_file:
+        ln = line.strip('\n\r')
+        print(ln)
+        splitLine = ln.split(", ")
+        city = splitLine[0]
+        lat = float(splitLine[1])
+        lon = float(splitLine[2])
+        locationDict[city] = {
+            "lat": lat,
+            "lon": lon,
+        }
+    print(locationDict)
+    loc_file.close()
+
+
+loadLocations()
+
+
+def saveLocations():
+    loc_file = open("locs.txt", "w+")
+    loc_file.close()
+    loc_file = open("locs.txt", "a+")
+    for loc in locationDict:
+        lat = locationDict[loc]['lat']
+        lon = locationDict[loc]['lon']
+        loc_file.write(f"{loc}, {lat}, {lon}\n")
+    loc_file.close()
+
+
+def addLocation(city, lat, lon):
+    locationDict[city] = {
+        "lat": lat,
+        "lon": lon
+    }
+    saveLocations()
+
+
 def printweather(lat, lon):
-  # ...with TODO above. if lat in locationDict.keys(): locationDict[lat] etc...
-  # rename lat to latOrCity?
+    # ...with TODO above. if lat in locationDict.keys(): locationDict[lat] etc...
+    # rename lat to latOrCity?
+    if (lat in locationDict):
+        print(f"found location {lat} in locationDict, using stored vals")
+        lon = locationDict[lat]["lon"]
+        lat = locationDict[lat]["lat"]
+
     try:
         data = urllib.request.urlopen(
             f"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,daily,minutely&units=imperial&appid=4ba6a408966bcec7ac3ae7026c9ab365")
@@ -21,7 +73,7 @@ def printweather(lat, lon):
         cFeels = format(cFeels, ',.2f')
         return f"{wData['current']['temp']} fahrenheit ({c}c). {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit ({cFeels}c). Generally: {wData['current']['weather'][0]['description']}."
     except:
-        return "Something went wrong."
+        return "Something went wrong. Invalid location?"
 
 # Old weather:
 
