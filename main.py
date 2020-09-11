@@ -64,7 +64,7 @@ def main():
         # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
         if ircmsg.find("JOIN") != -1:
             name = ircmsg.split('!', 1)[0][1:]
-            print(f'found join for username {name}')
+            # print(f'found join for username {name}')
             if msg.userHasMsg(name):
                 for messageNum in msg.msgDict[name]:
                     message = msg.msgDict[name][messageNum]
@@ -118,7 +118,7 @@ def main():
                 # TODO: Make a table of 'name's (usernames) and additional corresponding info?
 
                 if message.find('.date') == 0:
-                    print("printing date")
+                    # print("printing date")
                     sendmsg(getdate.printdaynumber())
 
                 if message.find(".dodongo") == 0:
@@ -147,18 +147,18 @@ def main():
                     msgArrSplit.pop(0)
                     msgArrJoined = ' '.join(msgArrSplit)
                     msgArrCommaSplit = msgArrJoined.split(', ')
-                    print(msgArrSplit)
+                    # print(msgArrSplit)
                     if len(msgArrCommaSplit) == 1:
                         yesNos = ["yeah do it", "well maybe",
                                   "no i don't think so", "it's probably fine"]
                         sendmsg(random.choice(yesNos))
                     elif len(msgArrCommaSplit) > 1:
-                        print(msgArrCommaSplit)
+                        # print(msgArrCommaSplit)
                         chosen = random.choice(msgArrCommaSplit)
                         preMsg = random.choice(
                             ["i like this one", "sounds cool", "the best", "be a good human", "embrace obedience to your robot masters"])
                         messageToSend = f"{preMsg}: {chosen}"
-                        print(messageToSend)
+                        # print(messageToSend)
                         sendmsg(messageToSend)
                     else:
                         sendmsg("you need to give me choices!!")
@@ -198,13 +198,13 @@ def main():
                         sendmsg('.addloc <location name>, <lat>, <lon>')
 
                 if message.find(".weather") == 0:
-                    print("printing weather")
+                    # print("printing weather")
                     splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
                     splitmsg = ' '.join(splitmsg).split(', ')
                     lat = 0
                     lon = 0
-                    print(splitmsg)
+                    # print(splitmsg)
                     if len(splitmsg) == 1:
                         loc = splitmsg[0]
                         sendmsg(getweather.printweather(loc, 0))
@@ -220,15 +220,15 @@ def main():
                             '.weather <location name> OR <latitude>, <longitude>')
 
                 if message.find(".fortune") == 0:
-                    print("printing fortune")
+                    # print("printing fortune")
                     sendmsg(getfortune.printrandomfortune())
 
                 if message.find('.getskdtheme') == 0:
-                    print('printing skd theme')
+                    # print('printing skd theme')
                     sendmsg(getskdtheme.printskdtheme())
 
                 if message.find('.hotdog') == 0:
-                    print('printing a hotdog')
+                    # print('printing a hotdog')
                     sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
                 # if message.find(".weather") == 0: #old weather command

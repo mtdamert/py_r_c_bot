@@ -1,4 +1,4 @@
-
+# msgDict follows format:
 # msgDict = {
 #     "ThereIsNoJustice": {
 #         0: {
@@ -21,7 +21,7 @@ def loadMsgs():
     i = 0
     for line in msg_file:
         ln = line.strip('\n\r')
-        print(ln)
+        # print(ln)
         splitLine = ln.split(", ")
         receivingUser = splitLine[0]
         fromUser = splitLine[1]
@@ -39,7 +39,7 @@ def loadMsgs():
                 }
             }
         i += 1
-    print(msgDict)
+    # print(msgDict)
     msg_file.close()
 
 
