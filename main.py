@@ -109,6 +109,8 @@ def main():
                         message = target.split(' ', 1)[1]
                         target = target.split(' ')[0]
                         msg.addMsg(target, name, message)
+                        sendmsg(
+                            f'your message has been stored until I see {target} join')
                     else:
                         sendmsg(
                             "message should be sent in format: '.msg [target] [message]'")
