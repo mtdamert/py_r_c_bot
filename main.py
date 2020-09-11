@@ -43,7 +43,7 @@ def sendmsg(msg, target=channel):  # sends messages to the target
 
 
 def main():
-    # getfortune.loadfortunes() #this is preventing the bot from running
+    getfortune.loadfortunes()
 
     print(" > > > Beginning IRC bot")
     # connect to the server using the port 6667 (the standard IRC port)
@@ -219,9 +219,9 @@ def main():
                         sendmsg(
                             '.weather <location name> OR <latitude>, <longitude>')
 
-                # if message.find(".fortune") == 0: #this prevents bot from running
-                #     print("printing fortune")
-                #     sendmsg(getfortune.printrandomfortune())
+                if message.find(".fortune") == 0:
+                    print("printing fortune")
+                    sendmsg(getfortune.printrandomfortune())
 
                 if message.find('.getskdtheme') == 0:
                     print('printing skd theme')
