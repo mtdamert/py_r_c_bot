@@ -10,6 +10,7 @@ import getfortune
 import getskdtheme
 import random
 import time
+import msg
 from getcovid import getCovidData
 
 
@@ -64,17 +65,17 @@ def main():
 
         if ircmsg.find("PRIVMSG") != -1:
             name = ircmsg.split('!', 1)[0][1:]
-            message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1].lower()
+            message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
             if len(name) < 17:
 
                 # respond to 'hi <botname>'
-                if message.find('hi ' + botnick.lower()) != -1 or message.find('hello ' + botnick.lower()) != -1 or message.find('hey ' + botnick.lower()) != -1:
+                if message.find('hi ' + botnick) != -1 or message.find('hello ' + botnick) != -1 or message.find('hey ' + botnick) != -1:
                     sendmsg("Hello " + name + "!")
                 elif name.lower() == adminname.lower() and message.rstrip() == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
-                elif message.find(botnick.lower()) != -1:
+                elif message.find(botnick) != -1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # use '.tell' to send someone a message
@@ -155,7 +156,7 @@ def main():
                         sendmsg('.covid <zipcode/countrycode>')
 
                 if message.find(".addloc") == 0:
-                    splitmsg = message.split(' ')
+                    splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
                     splitmsg = ' '.join(splitmsg).split(', ')
                     if len(splitmsg) == 3:
@@ -172,7 +173,7 @@ def main():
 
                 if message.find(".weather") == 0:
                     print("printing weather")
-                    splitmsg = message.split(' ')
+                    splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
                     splitmsg = ' '.join(splitmsg).split(', ')
                     lat = 0
