@@ -16,10 +16,10 @@ from getcovid import getCovidData
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
-channel = "#bot-testing"
-# channel = "#sketchdaily"
+# channel = "#bot-testing"
+channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
-adminname = "ThereIsNoJustice"  # My IRC nickname - change this to your username
+adminname = "teapup"  # My IRC nickname - change this to your username
 exitcode = "bye " + botnick
 
 
