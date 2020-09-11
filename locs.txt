@@ -1,3 +1,5 @@
-ny, 40, -73
+ny, 40.0, -73.0
 santa's house, 83.0, -35.0
 san jacinto, 34.0, -116.0
+ellicott city, 39.0, -76.0
+bradenton, 27.0, -82.0
