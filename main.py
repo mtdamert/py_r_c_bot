@@ -10,15 +10,16 @@ import getfortune
 import getskdtheme
 import random
 import time
+import msg
 from getcovid import getCovidData
 
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
-channel = "#bot-testing"
-# channel = "#sketchdaily"
+# channel = "#bot-testing"
+channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
-adminname = "teapup"  # My IRC nickname - change this to your username
+adminname = "ThereIsNoJustice"  # My IRC nickname - change this to your username
 exitcode = "bye " + botnick
 
 
@@ -42,7 +43,7 @@ def sendmsg(msg, target=channel):  # sends messages to the target
 
 
 def main():
-    # getfortune.loadfortunes() #this is preventing the bot from running
+    getfortune.loadfortunes()
 
     print(" > > > Beginning IRC bot")
     # connect to the server using the port 6667 (the standard IRC port)
@@ -61,20 +62,34 @@ def main():
             print(ircmsg)
 
         # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
+        if ircmsg.find("JOIN") != -1:
+            name = ircmsg.split('!', 1)[0][1:]
+            # print(f'found join for username {name}')
+            if msg.userHasMsg(name):
+                for messageNum in msg.msgDict[name]:
+                    message = msg.msgDict[name][messageNum]
+                    fromUser = message['from']
+                    receivedMsg = message['msg']
+                    sendmsg(f'{fromUser}: {receivedMsg}', name)
+                    time.sleep(5)
+                del msg.msgDict[name]
+                time.sleep(5)
+                sendmsg('these messages have self-destructed', name)
+                msg.saveMsgs()
 
         if ircmsg.find("PRIVMSG") != -1:
             name = ircmsg.split('!', 1)[0][1:]
-            message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1].lower()
+            message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
             if len(name) < 17:
 
                 # respond to 'hi <botname>'
-                if message.find('hi ' + botnick.lower()) != -1 or message.find('hello ' + botnick.lower()) != -1 or message.find('hey ' + botnick.lower()) != -1:
+                if message.find('hi ' + botnick) != -1 or message.find('hello ' + botnick) != -1 or message.find('hey ' + botnick) != -1:
                     sendmsg("Hello " + name + "!")
                 elif name.lower() == adminname.lower() and message.rstrip() == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
-                elif message.find(botnick.lower()) != -1:
+                elif message.find(botnick) != -1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # use '.tell' to send someone a message
@@ -88,10 +103,27 @@ def main():
                         message = "Could not parse. The message should be in the format of ‘.tell [target] [message]’ to work properly."
                     sendmsg(message, target)
 
+                if message.find('.msg') == 0:
+                    try:
+                        target = message.split(' ', 1)[1]
+                        if target.find(' ') != -1:
+                            message = target.split(' ', 1)[1]
+                            target = target.split(' ')[0]
+                            if (len(message) > 0):
+                                msg.addMsg(target, name, message)
+                                sendmsg(
+                                    f'your message has been stored until I see {target} join')
+                            else:
+                                sendmsg(
+                                    "message should be sent in format: '.msg [target] [message]'")
+                    except:
+                        sendmsg(
+                            "message should be sent in format: '.msg [target] [message]'")
+
                 # TODO: Make a table of 'name's (usernames) and additional corresponding info?
 
                 if message.find('.date') == 0:
-                    print("printing date")
+                    # print("printing date")
                     sendmsg(getdate.printdaynumber())
 
                 if message.find(".dodongo") == 0:
@@ -120,18 +152,18 @@ def main():
                     msgArrSplit.pop(0)
                     msgArrJoined = ' '.join(msgArrSplit)
                     msgArrCommaSplit = msgArrJoined.split(', ')
-                    print(msgArrSplit)
+                    # print(msgArrSplit)
                     if len(msgArrCommaSplit) == 1:
                         yesNos = ["yeah do it", "well maybe",
                                   "no i don't think so", "it's probably fine"]
                         sendmsg(random.choice(yesNos))
                     elif len(msgArrCommaSplit) > 1:
-                        print(msgArrCommaSplit)
+                        # print(msgArrCommaSplit)
                         chosen = random.choice(msgArrCommaSplit)
                         preMsg = random.choice(
                             ["i like this one", "sounds cool", "the best", "be a good human", "embrace obedience to your robot masters"])
                         messageToSend = f"{preMsg}: {chosen}"
-                        print(messageToSend)
+                        # print(messageToSend)
                         sendmsg(messageToSend)
                     else:
                         sendmsg("you need to give me choices!!")
@@ -155,7 +187,7 @@ def main():
                         sendmsg('.covid <zipcode/countrycode>')
 
                 if message.find(".addloc") == 0:
-                    splitmsg = message.split(' ')
+                    splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
                     splitmsg = ' '.join(splitmsg).split(', ')
                     if len(splitmsg) == 3:
@@ -171,13 +203,13 @@ def main():
                         sendmsg('.addloc <location name>, <lat>, <lon>')
 
                 if message.find(".weather") == 0:
-                    print("printing weather")
-                    splitmsg = message.split(' ')
+                    # print("printing weather")
+                    splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
                     splitmsg = ' '.join(splitmsg).split(', ')
                     lat = 0
                     lon = 0
-                    print(splitmsg)
+                    # print(splitmsg)
                     if len(splitmsg) == 1:
                         loc = splitmsg[0]
                         sendmsg(getweather.printweather(loc, 0))
@@ -192,16 +224,16 @@ def main():
                         sendmsg(
                             '.weather <location name> OR <latitude>, <longitude>')
 
-                # if message.find(".fortune") == 0: #this prevents bot from running
-                #     print("printing fortune")
-                #     sendmsg(getfortune.printrandomfortune())
+                if message.find(".fortune") == 0:
+                    # print("printing fortune")
+                    sendmsg(getfortune.printrandomfortune())
 
                 if message.find('.getskdtheme') == 0:
-                    print('printing skd theme')
+                    # print('printing skd theme')
                     sendmsg(getskdtheme.printskdtheme())
 
                 if message.find('.hotdog') == 0:
-                    print('printing a hotdog')
+                    # print('printing a hotdog')
                     sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
                 # if message.find(".weather") == 0: #old weather command
