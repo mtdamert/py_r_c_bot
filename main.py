@@ -19,7 +19,7 @@ server = "chat.freenode.net"
 # channel = "#bot-testing"
 channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
-adminname = "teapup"  # My IRC nickname - change this to your username
+adminname = "ThereIsNoJustice"  # My IRC nickname - change this to your username
 exitcode = "bye " + botnick
 
 
@@ -104,14 +104,19 @@ def main():
                     sendmsg(message, target)
 
                 if message.find('.msg') == 0:
-                    target = message.split(' ', 1)[1]
-                    if target.find(' ') != -1:
-                        message = target.split(' ', 1)[1]
-                        target = target.split(' ')[0]
-                        msg.addMsg(target, name, message)
-                        sendmsg(
-                            f'your message has been stored until I see {target} join')
-                    else:
+                    try:
+                        target = message.split(' ', 1)[1]
+                        if target.find(' ') != -1:
+                            message = target.split(' ', 1)[1]
+                            target = target.split(' ')[0]
+                            if (len(message) > 0):
+                                msg.addMsg(target, name, message)
+                                sendmsg(
+                                    f'your message has been stored until I see {target} join')
+                            else:
+                                sendmsg(
+                                    "message should be sent in format: '.msg [target] [message]'")
+                    except:
                         sendmsg(
                             "message should be sent in format: '.msg [target] [message]'")
 
