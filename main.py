@@ -16,8 +16,8 @@ from getcovid import getCovidData
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
-# channel = "#bot-testing"
-channel = "#sketchdaily"
+channel = "#bot-testing"
+# channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
 adminname = "ThereIsNoJustice"  # My IRC nickname - change this to your username
 exitcode = "bye " + botnick
@@ -62,6 +62,20 @@ def main():
             print(ircmsg)
 
         # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
+        if ircmsg.find("JOIN") != -1:
+            name = ircmsg.split('!', 1)[0][1:]
+            print(f'found join for username {name}')
+            if msg.userHasMsg(name):
+                for messageNum in msg.msgDict[name]:
+                    message = msg.msgDict[name][messageNum]
+                    fromUser = message['from']
+                    receivedMsg = message['msg']
+                    sendmsg(f'{fromUser}: {receivedMsg}', name)
+                    time.sleep(5)
+                del msg.msgDict[name]
+                time.sleep(5)
+                sendmsg('these messages have self-destructed', name)
+                msg.saveMsgs()
 
         if ircmsg.find("PRIVMSG") != -1:
             name = ircmsg.split('!', 1)[0][1:]
@@ -88,6 +102,16 @@ def main():
                         target = name
                         message = "Could not parse. The message should be in the format of ‘.tell [target] [message]’ to work properly."
                     sendmsg(message, target)
+
+                if message.find('.msg') == 0:
+                    target = message.split(' ', 1)[1]
+                    if target.find(' ') != -1:
+                        message = target.split(' ', 1)[1]
+                        target = target.split(' ')[0]
+                        msg.addMsg(target, name, message)
+                    else:
+                        sendmsg(
+                            "message should be sent in format: '.msg [target] [message]'")
 
                 # TODO: Make a table of 'name's (usernames) and additional corresponding info?
 

@@ -11,6 +11,11 @@
 msgDict = {}
 
 
+def userHasMsg(username):
+    if username in msgDict:
+        return True
+
+
 def loadMsgs():
     msg_file = open("msg.txt", "r")
     i = 0
@@ -21,12 +26,18 @@ def loadMsgs():
         receivingUser = splitLine[0]
         fromUser = splitLine[1]
         message = splitLine[2]
-        msgDict[receivingUser] = {
-            i: {
+        if receivingUser in msgDict:
+            msgDict[receivingUser][i] = {
                 "from": fromUser,
                 "msg": message,
             }
-        }
+        else:
+            msgDict[receivingUser] = {
+                i: {
+                    "from": fromUser,
+                    "msg": message,
+                }
+            }
         i += 1
     print(msgDict)
     msg_file.close()
@@ -40,23 +51,26 @@ def saveMsgs():
     msg_file.close()
     msg_file = open("msg.txt", "a+")
     for recUser in msgDict:
-        for msgIdx in recUser:
-            fromUser = msgDict[recUser][msgIdx]['from']
-            message = msgDict[recUser][msgIdx]['msg']
+        recUserKeys = msgDict[recUser]
+        for key in recUserKeys:
+            fromUser = msgDict[recUser][key]['from']
+            message = msgDict[recUser][key]['msg']
             msg_file.write(f"{recUser}, {fromUser}, {message}\n")
     msg_file.close()
 
 
 def addMsg(recUser, fromUser, msg):
     if recUser in msgDict:
-        newMsgIdx = len(recUser.keys()) + 1
+        newMsgIdx = len(msgDict[recUser].keys())
         msgDict[recUser][newMsgIdx] = {
             "from": fromUser,
             "msg": msg,
         }
     else:
-      msgDict[recUser][0] = {
-        "from": fromUser,
-        "msg": msg,
-      }
-  saveMsgs()
+        msgDict[recUser] = {
+            0: {
+                "from": fromUser,
+                "msg": msg,
+            }
+        }
+    saveMsgs()
