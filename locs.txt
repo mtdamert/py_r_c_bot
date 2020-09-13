@@ -3,3 +3,5 @@ santa's house, 83.0, -35.0
 san jacinto, 34.0, -116.0
 ellicott city, 39.0, -76.0
 bradenton, 27.0, -82.0
+philly, 39.952778, -75.163611
+philadelphia, 39.952778, -75.163611
