@@ -19,7 +19,7 @@ server = "chat.freenode.net"
 # channel = "#bot-testing"
 channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
-adminname = "ThereIsNoJustice"  # My IRC nickname - change this to your username
+adminname = ["teapup", "ThereIsNoJustice"] # My IRC nickname - change this to your username
 exitcode = "bye " + botnick
 
 
@@ -43,6 +43,7 @@ def sendmsg(msg, target=channel):  # sends messages to the target
 
 
 def main():
+    random.seed()
     getfortune.loadfortunes()
 
     print(" > > > Beginning IRC bot")
@@ -85,11 +86,11 @@ def main():
                 # respond to 'hi <botname>'
                 if message.find('hi ' + botnick) != -1 or message.find('hello ' + botnick) != -1 or message.find('hey ' + botnick) != -1:
                     sendmsg("Hello " + name + "!")
-                elif name.lower() == adminname.lower() and message.rstrip() == exitcode:  # quit with <exitcode>
+                elif name in adminname and message.rstrip() == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
-                elif message.find(botnick) != -1:
+                elif message.find(botnick) != -1 and random.randint(1,5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # use '.tell' to send someone a message
@@ -119,8 +120,6 @@ def main():
                     except:
                         sendmsg(
                             "message should be sent in format: '.msg [target] [message]'")
-
-                # TODO: Make a table of 'name's (usernames) and additional corresponding info?
 
                 if message.find('.date') == 0:
                     # print("printing date")
