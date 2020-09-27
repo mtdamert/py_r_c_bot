@@ -12,6 +12,7 @@ import random
 import time
 import msg
 from getcovid import getCovidData
+import getlols
 
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -45,6 +46,7 @@ def sendmsg(msg, target=channel):  # sends messages to the target
 def main():
     random.seed()
     getfortune.loadfortunes()
+    getlols.load()
 
     print(" > > > Beginning IRC bot")
     # connect to the server using the port 6667 (the standard IRC port)
@@ -62,7 +64,6 @@ def main():
         if (ircmsg.strip() != ""):
             print(ircmsg)
 
-        # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
         if ircmsg.find("JOIN") != -1:
             name = ircmsg.split('!', 1)[0][1:]
             # print(f'found join for username {name}')
@@ -235,6 +236,27 @@ def main():
                     # print('printing a hotdog')
                     sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
+                if message.find('.addlol') == 0:
+                    print('adding a lol')
+                    splitmsg = message.split(' ', 1)
+                    lol = splitmsg[1].strip()
+                    if lol != "":
+                        sendmsg(getlols.addlol(lol))
+                    else:
+                        sendmsg("which lol are you looking for?")
+
+                if message.find('.lol') == 0:
+                    print('looking up a lol')
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.findlol(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                    else:
+                        sendmsg("which lol are you looking for?")
+                        
                 # if message.find(".weather") == 0: #old weather command
                 #     print("printing weather")
                 #     sendmsg(getweather.printweather(
@@ -243,7 +265,7 @@ def main():
                 # list of commands
                 if message.find('.help') == 0:
                     sendmsg(
-                        "COMMANDS: .addloc .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
+                        "COMMANDS: .addloc .addlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .lol .weather")
 
         else:
             if ircmsg.find("PING :") != -1:
