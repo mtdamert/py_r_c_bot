@@ -2,7 +2,7 @@ import random
 import os
 
 lols_file_loc = '.\\data\\lols.txt'
-all_lols = []
+all_lols = {}
 
 def load():
     # if the directory doesn't exist, create it
@@ -14,21 +14,21 @@ def load():
         lols_file = open(lols_file_loc, "r")
         new_lols = [line.rstrip().split(',', 1) for line in lols_file]
         lols_file.close()
-        for lol in new_lols:
-            all_lols.append(lol)
+        for line in new_lols:
+            if len(line) > 1:
+                all_lols[line[0]] = line[1]
 
 def _addlol(key, value):
     key = key.strip()
     value = value.strip()
-    # check that this exact lol doesn't already exist (remember that multiple lols can exist for the same key)
-    for lol in all_lols:
-        if lol[0] == key and lol[1] == value:
-            return "This LOL already exists!"
+    # make sure this key isn't already used
+    if key in all_lols:
+        return "This LOL already exists!"
 
     lols_file = open(lols_file_loc, "a")
     lols_file.write(key + "," + value + "\n")
     lols_file.close()
-    all_lols.append([key, value])
+    all_lols[key] = value
     return "Yum yum, thanks!"
 
 def addlol(line):
@@ -38,25 +38,30 @@ def addlol(line):
         key = line[:comma_pos]
         value = line[(comma_pos + 1):]
         return _addlol(key, value)
-    elif line.find(" ") != -1:
-        space_pos = line.find(" ")
-        key = line[:space_pos]
-        value = line[(space_pos + 1):]
-        return _addlol(key, value)
     else:
-        return "error adding; example of hot to add a lol: .addlol hotdog, ( ´∀｀)つ―⊂ZZZ⊃"
+        return "error, lol was not added. Example of how to add a lol: .addlol hotdog, ( ´∀｀)つ―⊂ZZZ⊃"
 
-def findlol(lolname):
-    lols_found = []
-    print("all lols:")
-    print(all_lols)
-    print("====")
-    for lol in all_lols:
-        print("checking against " + lol[0])
-        if lol[0] == lolname:
-            lols_found.append(lol)
-    if len(lols_found) > 0:
-        lol_num = random.randint(0, len(lols_found) - 1)
-        return lols_found[lol_num][1]
+def getlol(lolname):
+    if lolname in all_lols:
+        return all_lols[lolname]
     else:
-        return "Nothing found"
+        return "nothing found"
+
+def searchlol(lolname):
+    lols_found = []
+    for key,value in all_lols.items():
+        if lolname in key:
+            lols_found.append(key)
+    if len(lols_found) > 0:
+        if len(lols_found) > 10:
+            result = "first 10 possibilities: "
+            for lol in lols_found:
+                result += lol + ", "
+            return result[:(len(result) - 2)]
+        else:
+            result = "possibilities: "
+            for lol in lols_found:
+                result += lol + ", "
+            return result[:(len(result) - 2)]
+    else:
+        return "nothing found"

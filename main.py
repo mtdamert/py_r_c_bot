@@ -239,19 +239,32 @@ def main():
                 if message.find('.addlol') == 0:
                     print('adding a lol')
                     splitmsg = message.split(' ', 1)
-                    lol = splitmsg[1].strip()
-                    if lol != "":
-                        sendmsg(getlols.addlol(lol))
+                    if len(splitmsg) <= 1:
+                        sendmsg("which lol are you looking for?")
+                    else:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.addlol(lol))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                elif message.find('.searchlol') == 0:
+                    print('searching for all lols matching a pattern')
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.searchlol(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
                     else:
                         sendmsg("which lol are you looking for?")
-
-                if message.find('.lol') == 0:
+                elif message.find('.lol') == 0:
                     print('looking up a lol')
                     splitmsg = message.split(' ', 1)
                     if len(splitmsg) > 1:
                         lol = splitmsg[1].strip()
                         if lol != "":
-                            sendmsg(getlols.findlol(splitmsg[1].strip()))
+                            sendmsg(getlols.getlol(splitmsg[1].strip()))
                         else:
                             sendmsg("which lol are you looking for?")
                     else:
@@ -265,7 +278,7 @@ def main():
                 # list of commands
                 if message.find('.help') == 0:
                     sendmsg(
-                        "COMMANDS: .addloc .addlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .lol .weather")
+                        "COMMANDS: .addloc .addlol .lol .searchlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
 
         else:
             if ircmsg.find("PING :") != -1:
