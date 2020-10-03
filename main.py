@@ -260,6 +260,17 @@ def main():
                             sendmsg("which lol are you looking for?")
                     else:
                         sendmsg("which lol are you looking for?")
+                elif message.find(".lolinfo") == 0:
+                    print("searching for a lol")
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.lolinfo(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                    else:
+                        sendmsg("which lol are you looking for?")
                 elif message.find('.lol') == 0:
                     print('looking up a lol')
                     splitmsg = message.split(' ', 1)

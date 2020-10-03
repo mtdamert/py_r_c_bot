@@ -69,3 +69,9 @@ def searchlol(lolname):
             return result[:(len(result) - 2)]
     else:
         return "nothing found"
+
+def lolinfo(lolname):
+    if lolname in all_lols:
+        return "author: " + all_lols[lolname][1] + ", added on: " + all_lols[lolname][2] + " UTC"
+    else:
+        return "LOL not found"
