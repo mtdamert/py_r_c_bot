@@ -150,7 +150,7 @@ def main():
                     msgArrSplit = message.split(' ')
                     msgArrSplit.pop(0)
                     msgArrJoined = ' '.join(msgArrSplit)
-                    msgArrCommaSplit = msgArrJoined.split(', ')
+                    msgArrCommaSplit = msgArrJoined.split(',')
                     # print(msgArrSplit)
                     if len(msgArrCommaSplit) == 1:
                         yesNos = ["yeah do it", "well maybe",
@@ -161,7 +161,7 @@ def main():
                         chosen = random.choice(msgArrCommaSplit)
                         preMsg = random.choice(
                             ["i like this one", "sounds cool", "the best", "be a good human", "embrace obedience to your robot masters"])
-                        messageToSend = f"{preMsg}: {chosen}"
+                        messageToSend = f"{preMsg}: {chosen.strip()}"
                         # print(messageToSend)
                         sendmsg(messageToSend)
                     else:
