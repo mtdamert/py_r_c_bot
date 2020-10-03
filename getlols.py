@@ -1,5 +1,6 @@
 import random
 import os
+from datetime import datetime
 
 lols_file_loc = '.\\data\\lols.txt'
 all_lols = {}
@@ -16,40 +17,43 @@ def load():
         lols_file.close()
         for line in new_lols:
             if len(line) > 1:
-                all_lols[line[0]] = line[1]
+                # assume the line is in the format <key, value, author, date>
+                text_parts = line[1].rsplit(',', 2)
+                all_lols[line[0]] = [text_parts[0], text_parts[1], text_parts[2]]
 
-def _addlol(key, value):
+def _addlol(key, value, author, time):
     key = key.strip()
     value = value.strip()
     # make sure this key isn't already used
     if key in all_lols:
         return "This LOL already exists!"
 
+    time_str = time.strftime("%d/%m/%Y %H:%M:%S")
     lols_file = open(lols_file_loc, "a")
-    lols_file.write(key + "," + value + "\n")
+    lols_file.write(key + "," + value + "," + author + "," + time_str + "\n")
     lols_file.close()
-    all_lols[key] = value
+    all_lols[key] = [value, author, time_str]
     return "Yum yum, thanks!"
 
-def addlol(line):
+def addlol(line, author, time):
     # make sure that both a name and a value are provided
     if line.find(",") != -1:
         comma_pos = line.find(",")
         key = line[:comma_pos]
         value = line[(comma_pos + 1):]
-        return _addlol(key, value)
+        return _addlol(key, value, author, time)
     else:
         return "error, lol was not added. Example of how to add a lol: .addlol hotdog, ( ´∀｀)つ―⊂ZZZ⊃"
 
 def getlol(lolname):
     if lolname in all_lols:
-        return all_lols[lolname]
+        return all_lols[lolname][0]
     else:
         return "nothing found"
 
 def searchlol(lolname):
     lols_found = []
-    for key,value in all_lols.items():
+    for key,array in all_lols.items():
         if lolname in key:
             lols_found.append(key)
     if len(lols_found) > 0:
