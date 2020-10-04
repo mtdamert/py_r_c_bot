@@ -19,7 +19,7 @@ def load():
             if len(line) > 1:
                 # assume the line is in the format <key, value, author, date>
                 text_parts = line[1].rsplit(',', 2)
-                all_lols[line[0]] = [text_parts[0], text_parts[1], text_parts[2]]
+                all_lols[line[0]] = {"value" : text_parts[0], "author" : text_parts[1], "time" : text_parts[2]}
 
 def _addlol(key, value, author, time):
     key = key.strip()
@@ -32,7 +32,7 @@ def _addlol(key, value, author, time):
     lols_file = open(lols_file_loc, "a")
     lols_file.write(key + "," + value + "," + author + "," + time_str + "\n")
     lols_file.close()
-    all_lols[key] = [value, author, time_str]
+    all_lols[key] = {"value" : value, "author" : author, "time" : time_str}
     return "Yum yum, thanks!"
 
 def addlol(line, author, time):
@@ -47,13 +47,13 @@ def addlol(line, author, time):
 
 def getlol(lolname):
     if lolname in all_lols:
-        return all_lols[lolname][0]
+        return all_lols[lolname]["value"]
     else:
         return "nothing found"
 
 def searchlol(lolname):
     lols_found = []
-    for key,array in all_lols.items():
+    for key,dictionary in all_lols.items():
         if lolname in key:
             lols_found.append(key)
     if len(lols_found) > 0:
@@ -72,6 +72,6 @@ def searchlol(lolname):
 
 def lolinfo(lolname):
     if lolname in all_lols:
-        return "author: " + all_lols[lolname][1] + ", added on: " + all_lols[lolname][2] + " UTC"
+        return "author: " + all_lols[lolname]["author"] + ", added on: " + all_lols[lolname]["time"] + " UTC"
     else:
         return "LOL not found"
