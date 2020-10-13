@@ -3,6 +3,7 @@
 
 import socket
 import time
+from datetime import datetime
 # my files
 import getweather
 import getdate
@@ -12,6 +13,7 @@ import random
 import time
 import msg
 from getcovid import getCovidData
+import getlols
 
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -45,6 +47,7 @@ def sendmsg(msg, target=channel):  # sends messages to the target
 def main():
     random.seed()
     getfortune.loadfortunes()
+    getlols.load()
 
     print(" > > > Beginning IRC bot")
     # connect to the server using the port 6667 (the standard IRC port)
@@ -62,31 +65,30 @@ def main():
         if (ircmsg.strip() != ""):
             print(ircmsg)
 
-        # TODO: Use eval('text') to run code as a file that can be stopped without having to rejoin the IRC server
+        messagerName = ircmsg.split('!', 1)[0][1:]
+
         if ircmsg.find("JOIN") != -1:
-            name = ircmsg.split('!', 1)[0][1:]
             # print(f'found join for username {name}')
-            if msg.userHasMsg(name):
-                for messageNum in msg.msgDict[name]:
-                    message = msg.msgDict[name][messageNum]
+            if msg.userHasMsg(messagerName):
+                for messageNum in msg.msgDict[messagerName]:
+                    message = msg.msgDict[messagerName][messageNum]
                     fromUser = message['from']
                     receivedMsg = message['msg']
-                    sendmsg(f'{fromUser}: {receivedMsg}', name)
+                    sendmsg(f'{fromUser}: {receivedMsg}', messagerName)
                     time.sleep(5)
-                del msg.msgDict[name]
+                del msg.msgDict[messagerName]
                 time.sleep(5)
-                sendmsg('these messages have self-destructed', name)
+                sendmsg('these messages have self-destructed', messagerName)
                 msg.saveMsgs()
 
         if ircmsg.find("PRIVMSG") != -1:
-            name = ircmsg.split('!', 1)[0][1:]
             message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
-            if len(name) < 17:
+            if len(messagerName) < 17:
 
                 # respond to 'hi <botname>'
                 if message.find('hi ' + botnick) != -1 or message.find('hello ' + botnick) != -1 or message.find('hey ' + botnick) != -1:
-                    sendmsg("Hello " + name + "!")
-                elif name in adminname and message.rstrip() == exitcode:  # quit with <exitcode>
+                    sendmsg("Hello " + messagerName + "!")
+                elif messagerName in adminname and message.rstrip() == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
@@ -100,7 +102,7 @@ def main():
                         message = target.split(' ', 1)[1]
                         target = target.split(' ')[0]
                     else:
-                        target = name
+                        target = messagerName
                         message = "Could not parse. The message should be in the format of ‘.tell [target] [message]’ to work properly."
                     sendmsg(message, target)
 
@@ -111,7 +113,7 @@ def main():
                             message = target.split(' ', 1)[1]
                             target = target.split(' ')[0]
                             if (len(message) > 0):
-                                msg.addMsg(target, name, message)
+                                msg.addMsg(target, messagerName, message)
                                 sendmsg(
                                     f'your message has been stored until I see {target} join')
                             else:
@@ -125,8 +127,9 @@ def main():
                     # print("printing date")
                     sendmsg(getdate.printdaynumber())
 
-                if message.find(".dodongo") == 0:
-                    sendmsg("!lol dodongo")
+                # SOMEDAY . . .
+                # if message.find(".dodongo") == 0:
+                #     sendmsg("!lol dodongo")
 
                 if message.find(".ftoc") == 0:
                     try:
@@ -235,6 +238,51 @@ def main():
                     # print('printing a hotdog')
                     sendmsg('( ´∀｀)つ―⊂ZZZ⊃')
 
+                if message.find('.addlol') == 0:
+                    print('adding a lol')
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) <= 1:
+                        sendmsg("which lol are you looking for?")
+                    else:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.addlol(lol, messagerName, datetime.utcnow()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                elif message.find('.searchlol') == 0:
+                    print('searching for all lols matching a pattern')
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.searchlol(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                    else:
+                        sendmsg("which lol are you looking for?")
+                elif message.find(".lolinfo") == 0:
+                    print("searching for a lol")
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.lolinfo(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                    else:
+                        sendmsg("which lol are you looking for?")
+                elif message.find('.lol') == 0:
+                    print('looking up a lol')
+                    splitmsg = message.split(' ', 1)
+                    if len(splitmsg) > 1:
+                        lol = splitmsg[1].strip()
+                        if lol != "":
+                            sendmsg(getlols.getlol(splitmsg[1].strip()))
+                        else:
+                            sendmsg("which lol are you looking for?")
+                    else:
+                        sendmsg("which lol are you looking for?")
+                        
                 # if message.find(".weather") == 0: #old weather command
                 #     print("printing weather")
                 #     sendmsg(getweather.printweather(
@@ -243,7 +291,7 @@ def main():
                 # list of commands
                 if message.find('.help') == 0:
                     sendmsg(
-                        "COMMANDS: .addloc .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
+                        "COMMANDS: .addloc .addlol .lol .searchlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
 
         else:
             if ircmsg.find("PING :") != -1:

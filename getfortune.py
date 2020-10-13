@@ -8,6 +8,7 @@ def loadfortunes():
     my_file = open("fortunes.txt", "r")
     for line in my_file:
         fortunes.append(line.replace('\n', ''))
+    my_file.close()
 
 def printrandomfortune():
     random_index = random.randint(0, len(fortunes) - 1)
