@@ -12,7 +12,7 @@ def load():
         if os.path.dirname(dir) is False:
             os.makedirs(dir)
     else:
-        lols_file = open(lols_file_loc, "r")
+        lols_file = open(lols_file_loc, "r", encoding="utf-8")
         new_lols = [line.rstrip().split(',', 1) for line in lols_file]
         lols_file.close()
         for line in new_lols:
@@ -29,7 +29,7 @@ def _addlol(key, value, author, time):
         return "This LOL already exists!"
 
     time_str = time.strftime("%d/%m/%Y %H:%M:%S")
-    lols_file = open(lols_file_loc, "a")
+    lols_file = open(lols_file_loc, "a", encoding="utf-8")
     lols_file.write(key + "," + value + "," + author + "," + time_str + "\n")
     lols_file.close()
     all_lols[key] = {"value" : value, "author" : author, "time" : time_str}
