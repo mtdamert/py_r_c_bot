@@ -15,13 +15,22 @@ import msg
 from getcovid import getCovidData
 import getlols
 
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+
+# create the chatbot
+chatbot = ChatBot('Nizz')
+trainer = ChatterBotCorpusTrainer(chatbot)
+trainer.train("chatterbot.corpus.english")
+
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
 # channel = "#bot-testing"
 channel = "#sketchdaily"
 botnick = "nizz"  # The bot's nickname
-adminname = ["teapup", "ThereIsNoJustice"] # My IRC nickname - change this to your username
+# My IRC nickname - change this to your username
+adminname = ["teapup", "ThereIsNoJustice"]
 exitcode = "bye " + botnick
 
 
@@ -92,8 +101,17 @@ def main():
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
-                elif message.find(botnick) != -1 and random.randint(1,5) == 1:
+                elif message.find(botnick) != -1 and random.randint(1, 5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
+
+                # use '..' to chat with the bot
+                if message.find('..') == 0:
+                    # get a response from chatbot
+                    msgNoPeriods = message.split('.')[2]
+                    response = chatbot.get_response(msgNoPeriods)
+                    response = str(response)
+                    print(response)
+                    sendmsg(response)
 
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
@@ -246,7 +264,8 @@ def main():
                     else:
                         lol = splitmsg[1].strip()
                         if lol != "":
-                            sendmsg(getlols.addlol(lol, messagerName, datetime.utcnow()))
+                            sendmsg(getlols.addlol(
+                                lol, messagerName, datetime.utcnow()))
                         else:
                             sendmsg("which lol are you looking for?")
                 elif message.find('.searchlol') == 0:
@@ -282,7 +301,7 @@ def main():
                             sendmsg("which lol are you looking for?")
                     else:
                         sendmsg("which lol are you looking for?")
-                        
+
                 # if message.find(".weather") == 0: #old weather command
                 #     print("printing weather")
                 #     sendmsg(getweather.printweather(

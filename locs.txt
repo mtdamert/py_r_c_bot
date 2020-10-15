@@ -5,3 +5,5 @@ ellicott city, 39.0, -76.0
 bradenton, 27.0, -82.0
 philly, 39.952778, -75.163611
 philadelphia, 39.952778, -75.163611
+pasadena, 34.0, -118.0
+henagar, 34.0, -85.0
