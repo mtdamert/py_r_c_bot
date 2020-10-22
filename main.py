@@ -174,8 +174,12 @@ def main():
                     msgArrCommaSplit = msgArrJoined.split(',')
                     # print(msgArrSplit)
                     if len(msgArrCommaSplit) == 1:
-                        yesNos = ["yeah do it", "well maybe",
-                                  "no i don't think so", "it's probably fine"]
+                        yesNos = ["yeah do it", "do it right now",
+                                    "definitely", "absolutely",
+                                    "that's the best idea you've ever had", "i order you to do it"
+                                  "no i don't think so", "terrible idea",
+                                  "why even ask such a thing", "eww no",
+                                  "pft no", "i order you to do something else"]
                         sendmsg(random.choice(yesNos))
                     elif len(msgArrCommaSplit) > 1:
                         # print(msgArrCommaSplit)
