@@ -66,13 +66,19 @@ def printweather(city):
         lat = locationDict[lat]["lat"]
     # not in saved, use geocoding to find it using name, add and save
     else:
-        print(f"{city} not found, using geocoding")
-        geocoder = OpenCageGeocode(geoCodeKey)
-        results = geocoder.geocode(f"{city}")
-        print(f"RESULTS: ")
-        print(f"LAT: {results[0]['geometry']['lat']}")
-        print(f"LONG: {results[0]['geometry']['lng']}")
-        addLocation(city, lat, lon)
+        try:
+            print(f"{city} not found, using geocoding")
+            geocoder = OpenCageGeocode(geoCodeKey)
+            results = geocoder.geocode(f"{city}")
+            print(f"RESULTS: ")
+            print(f"LAT: {results[0]['geometry']['lat']}")
+            print(f"LONG: {results[0]['geometry']['lng']}")
+            lat = results[0]['geometry']['lat']
+            lon = results[0]['geometry']['lon']
+            if lat and lon:
+                addLocation(city, lat, lon)
+        except:
+            return "Something went wrong. Invalid location?"
 
     try:
         data = urllib.request.urlopen(
@@ -89,4 +95,4 @@ def printweather(city):
     except:
         return "Something went wrong. Invalid location?"
 
-printweather("Kiev")
+print(printweather("sdfdfdsfdsf"))
