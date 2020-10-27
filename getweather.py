@@ -58,8 +58,8 @@ def addLocation(city, lat, lon):
 
 def printweather(city):
     # check for city in saved locations
-    lon = None
-    lat = None
+    lon = False
+    lat = False
     if (city in locationDict):
         print(f"found location {city} in locationDict, using stored vals")
         lon = locationDict[lat]["lon"]
@@ -73,8 +73,8 @@ def printweather(city):
             print(f"RESULTS: ")
             print(f"LAT: {results[0]['geometry']['lat']}")
             print(f"LONG: {results[0]['geometry']['lng']}")
-            lat = results[0]['geometry']['lat']
-            lon = results[0]['geometry']['lon']
+            lat = int(results[0]['geometry']['lat'])
+            lon = int(results[0]['geometry']['lng'])
             if lat and lon:
                 addLocation(city, lat, lon)
         except:

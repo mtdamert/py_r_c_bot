@@ -230,23 +230,12 @@ def main():
                     # print("printing weather")
                     splitmsg = message.lower().split(' ')
                     splitmsg.pop(0)
-                    splitmsg = ' '.join(splitmsg).split(', ')
-                    lat = 0
-                    lon = 0
-                    # print(splitmsg)
-                    if len(splitmsg) == 1:
-                        loc = splitmsg[0]
-                        sendmsg(getweather.printweather(loc, 0))
-                    elif len(splitmsg) == 2:
-                        try:
-                            lat = int(splitmsg[0])
-                            lon = int(splitmsg[1])
-                            sendmsg(getweather.printweather(lat, lon))
-                        except ValueError:
-                            sendmsg("I couldn't do that!")
+                    splitmsg
+                    cityName = ' '.join(splitmsg)
+                    if len(splitmsg) >= 1:
+                        sendmsg(getweather.printweather(cityName))
                     else:
-                        sendmsg(
-                            '.weather <location name> OR <latitude>, <longitude>')
+                        sendmsg('.weather <location name>')
 
                 if message.find(".fortune") == 0:
                     # print("printing fortune")
