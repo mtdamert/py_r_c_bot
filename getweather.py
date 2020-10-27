@@ -3,10 +3,10 @@ import json
 import os #need this to get geocode api from dotenv file
 from opencage.geocoder import OpenCageGeocode
 
+geoCodeKey = os.environ.get("GEOCODE_KEY")
 
 # TODO make an object mapping cities to their lat and lon so that city names can be typed in instead
 # locationDict = { "LA": { "lat": 0, "lon": 0}}
-geoCodeKey = os.environ.get("GEOCODE_KEY")
 # print(geoCodeKey)
 
 locationDict = {
@@ -94,5 +94,3 @@ def printweather(city):
         return f"{wData['current']['temp']} fahrenheit ({c}c). {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit ({cFeels}c). Generally: {wData['current']['weather'][0]['description']}."
     except:
         return "Something went wrong. Invalid location?"
-
-print(printweather("sdfdfdsfdsf"))
