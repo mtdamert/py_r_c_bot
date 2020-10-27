@@ -8,5 +8,7 @@ philadelphia, 39.952778, -75.163611
 pasadena, 34.0, -118.0
 henagar, 34.0, -85.0
 oslo, 60.0, 11.0
-kiev, 50, 30
-st. louis, 38, -90
+kiev, 50.0, 30.0
+st. louis, 38.0, -90.0
+denver, 39, -104
+houston, 29, -95
