@@ -1,6 +1,7 @@
 __pycache__/
 .vscode/
 .venv
+.env
 locs.txt
 msg.txt
 data/

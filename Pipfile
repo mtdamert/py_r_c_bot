@@ -6,8 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+python-dotenv = "*"
 chatterbot = "*"
+opencage = "*"
 chatterbot-corpus = "*"
+pyyaml = "*"
 
 [requires]
 python_version = "3.8"

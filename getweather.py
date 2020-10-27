@@ -1,9 +1,13 @@
 import urllib.request
 import json
+import os #need this to get geocode api from dotenv file
+from opencage.geocoder import OpenCageGeocode
+
+geoCodeKey = os.environ.get("GEOCODE_KEY")
 
 # TODO make an object mapping cities to their lat and lon so that city names can be typed in instead
 # locationDict = { "LA": { "lat": 0, "lon": 0}}
-
+# print(geoCodeKey)
 
 locationDict = {
     "ny": {
@@ -52,13 +56,29 @@ def addLocation(city, lat, lon):
     saveLocations()
 
 
-def printweather(lat, lon):
-    # ...with TODO above. if lat in locationDict.keys(): locationDict[lat] etc...
-    # rename lat to latOrCity?
-    if (lat in locationDict):
-        print(f"found location {lat} in locationDict, using stored vals")
+def printweather(city):
+    # check for city in saved locations
+    lon = False
+    lat = False
+    if (city in locationDict):
+        print(f"found location {city} in locationDict, using stored vals")
         lon = locationDict[lat]["lon"]
         lat = locationDict[lat]["lat"]
+    # not in saved, use geocoding to find it using name, add and save
+    else:
+        try:
+            print(f"{city} not found, using geocoding")
+            geocoder = OpenCageGeocode(geoCodeKey)
+            results = geocoder.geocode(f"{city}")
+            print(f"RESULTS: ")
+            print(f"LAT: {results[0]['geometry']['lat']}")
+            print(f"LONG: {results[0]['geometry']['lng']}")
+            lat = int(results[0]['geometry']['lat'])
+            lon = int(results[0]['geometry']['lng'])
+            if lat and lon:
+                addLocation(city, lat, lon)
+        except:
+            return "Something went wrong. Invalid location?"
 
     try:
         data = urllib.request.urlopen(
@@ -74,31 +94,3 @@ def printweather(lat, lon):
         return f"{wData['current']['temp']} fahrenheit ({c}c). {wData['current']['humidity']}% humidity. Feels like {wData['current']['feels_like']} fahrenheit ({cFeels}c). Generally: {wData['current']['weather'][0]['description']}."
     except:
         return "Something went wrong. Invalid location?"
-
-# Old weather:
-
-# import urllib.request
-# import xml.etree.ElementTree as ET
-# import pgeocode
-
-# def printweather(zip_code):
-#   zip_code = zip_code.strip()
-
-#   if zip_code is None or zip_code == "":
-#     return "But where? Please add a zip code after the weather command"
-
-#   nomi = pgeocode.Nominatim('us')
-#   latitude = nomi.query_postal_code(zip_code).latitude
-#   latitude = str(latitude)
-#   longitude = nomi.query_postal_code(zip_code).longitude
-#   longitude = str(longitude)
-
-#   # todo: get proper url for this user
-#   site = urllib.request.urlopen("https://forecast.weather.gov/MapClick.php?lat=" + latitude + "&lon=" + longitude + "&unit=0&lg=english&FcstType=dwml")
-#   site_source = site.read()
-#   xml_root = ET.fromstring(site_source)
-
-#   weather_location = xml_root.find("./head/source/production-center")
-#   fahrenheit = xml_root.find("./data[@type='current observations']/parameters/temperature[@units='Fahrenheit']/value")
-#   conditions = xml_root.find("./data[@type='current observations']/parameters/weather/weather-conditions[@weather-summary]")
-#   return ("Current weather in " + weather_location.text + ": " + fahrenheit.text + "F, " + conditions.attrib['weather-summary'])
