@@ -10,5 +10,7 @@ henagar, 34.0, -85.0
 oslo, 60.0, 11.0
 kiev, 50.0, 30.0
 st. louis, 38.0, -90.0
-denver, 39, -104
-houston, 29, -95
+denver, 39.0, -104.0
+houston, 29.0, -95.0
+trondheim, 63.0, 10.0
+Kiev, 50, 30
