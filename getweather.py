@@ -62,8 +62,8 @@ def printweather(city):
     lat = False
     if (city in locationDict):
         print(f"found location {city} in locationDict, using stored vals")
-        lon = locationDict[lat]["lon"]
-        lat = locationDict[lat]["lat"]
+        lon = locationDict[city]["lon"]
+        lat = locationDict[city]["lat"]
     # not in saved, use geocoding to find it using name, add and save
     else:
         try:
