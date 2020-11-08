@@ -18,6 +18,24 @@ def removeHtmlTags(tags, splitTag, html):
   last = retList.pop()
   return retList
 
+def getColor():
+  try:
+    site = urllib.request.urlopen("https://www.seventhsanctum.com/generate.php?Genname=color")
+    siteStr = site.read().decode('utf-8')
+
+    siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+    siteHtml = ''.join(siteHtml).strip('\n\r\t')
+    colors = removeHtmlTags(
+      ['<div class="GeneratorResultPrimeBGPara">',
+        '<div class="GeneratorResultSecondaryBGPara">'],
+        '</div>',
+        siteHtml)
+    shuffleList(colors)
+    retLst = [colors[0], colors[1], colors[2]]
+    return retLst
+  except:
+    return ["Error"]
+
 def getMecha():
   try:
     site = urllib.request.urlopen("https://www.seventhsanctum.com/generate.php?Genname=mechamaker")
@@ -63,8 +81,8 @@ def artPrompt(promptType):
         retLst = getRealAlignment()
       elif promptType == "mecha":
         retLst = getMecha()
-      elif promptType == "dnd":
-        retLst = getDND()
+      elif promptType == "color":
+        retLst = getColor()
       else:
         retLst = ["Invalid prompt type!"]
 
