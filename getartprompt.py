@@ -1,4 +1,5 @@
 import urllib.request
+import random
 
 # def convertInt(numStr):
 #     numStr = numStr.split(',')
@@ -20,24 +21,25 @@ def getRealAlignment():
 
       siteHtml = siteStr.split('Alignments</div>')[1].split('<P>')[0].split('<!--Title -->')[1]
       siteHtml = ''.join(siteHtml).strip('\n\r\t')
-      retStr = removeHtmlTags(
+      alignments = removeHtmlTags(
         ['<div class="GeneratorResultPrimeBG">',
          '<div class="GeneratorResultSecondaryBG">'],
          '</div>',
          siteHtml)
 
-      return retStr
+      retLst = random.choices(alignments, k=3)
+      return retLst
   except:
-    return "Error"
+    return ["Error"]
 
 
 def artPrompt(promptType):
     try:
-        retStr = getRealAlignment() if promptType == "alignment" else getMecha() if promptType == "mecha" else "Invalid prompt type!"
+        retLst = getRealAlignment() if promptType == "alignment" else getMecha() if promptType == "mecha" else "Invalid prompt type!"
 
-        return retStr
+        return retLst
     except:
-        return "Error"
+        return ["Error"]
 
 
 print(artPrompt("alignment"))
