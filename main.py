@@ -5,7 +5,6 @@ import socket
 import time
 from datetime import datetime
 # my files
-import getartprompt
 import getweather
 import getdate
 import getfortune
@@ -13,16 +12,17 @@ import getskdtheme
 import random
 import time
 import msg
+import getartprompt
 from getcovid import getCovidData
 import getlols
 
-from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+# from chatterbot import ChatBot
+# from chatterbot.trainers import ChatterBotCorpusTrainer
 
 # create the chatbot
-chatbot = ChatBot('Nizz')
-trainer = ChatterBotCorpusTrainer(chatbot)
-trainer.train("chatterbot.corpus.english")
+# chatbot = ChatBot('Nizz')
+# trainer = ChatterBotCorpusTrainer(chatbot)
+# trainer.train("chatterbot.corpus.english")
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
@@ -110,13 +110,13 @@ def main():
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # use '..' to chat with the bot
-                if message.find('..') == 0:
-                    # get a response from chatbot
-                    msgNoPeriods = message.split('.')[2]
-                    response = chatbot.get_response(msgNoPeriods)
-                    response = str(response)
-                    print(response)
-                    sendmsg(response)
+                # if message.find('..') == 0:
+                #     # get a response from chatbot
+                #     msgNoPeriods = message.split('.')[2]
+                #     response = chatbot.get_response(msgNoPeriods)
+                #     response = str(response)
+                #     print(response)
+                #     sendmsg(response)
 
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
