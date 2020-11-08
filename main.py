@@ -11,7 +11,7 @@ import getfortune
 import getskdtheme
 import random
 import time
-import msg
+import getmessages
 import getartprompt
 from getcovid import getCovidData
 import getlols
@@ -80,17 +80,17 @@ def main():
 
         if ircmsg.find("JOIN") != -1:
             # print(f'found join for username {name}')
-            if msg.userHasMsg(messagerName):
-                for messageNum in msg.msgDict[messagerName]:
-                    message = msg.msgDict[messagerName][messageNum]
+            if getmessages.userHasMsg(messagerName):
+                for messageNum in getmessages.msgDict[messagerName]:
+                    message = getmessages.msgDict[messagerName][messageNum]
                     fromUser = message['from']
                     receivedMsg = message['msg']
                     sendmsg(f'{fromUser}: {receivedMsg}', messagerName)
                     time.sleep(5)
-                del msg.msgDict[messagerName]
+                del getmessages.msgDict[messagerName]
                 time.sleep(5)
                 sendmsg('these messages have self-destructed', messagerName)
-                msg.saveMsgs()
+                getmessages.saveMsgs()
 
         if ircmsg.find("PRIVMSG") != -1:
             message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
@@ -136,7 +136,8 @@ def main():
                             message = target.split(' ', 1)[1]
                             target = target.split(' ')[0]
                             if (len(message) > 0):
-                                msg.addMsg(target, messagerName, message)
+                                getmessages.addMsg(
+                                    target, messagerName, message)
                                 sendmsg(
                                     f'your message has been stored until I see {target} join'
                                 )
