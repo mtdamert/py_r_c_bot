@@ -5,6 +5,7 @@ import socket
 import time
 from datetime import datetime
 # my files
+import getartprompt
 import getweather
 import getdate
 import getfortune
@@ -191,6 +192,17 @@ def main():
                         sendmsg(messageToSend)
                     else:
                         sendmsg("you need to give me choices!!")
+
+                if message.find('.artprompt') == 0:
+                    splitMsg = message.split(' ')
+                    if len(splitMsg) > 1:
+                        promptType = splitMsg[1]
+                        resLst = getartprompt.artPrompt(promptType)
+                        for msg in resLst:
+                            sendmsg(msg)
+                            time.sleep(3)
+                    else:
+                        sendmsg('.artprompt <alignment/mecha>')
 
                 if message.find('.covid') != -1:
                     splitMsg = message.split(' ')

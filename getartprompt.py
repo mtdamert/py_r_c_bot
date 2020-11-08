@@ -7,12 +7,34 @@ import random
 #     numStr = int(numStr)
 #     return numStr
 
+def shuffleList(lst):
+  random.shuffle(lst)
+
 def removeHtmlTags(tags, splitTag, html):
   tempString = html
   for tag in tags:
     tempString = ''.join(tempString.split(tag))
   retList = tempString.split(splitTag)
+  last = retList.pop()
   return retList
+
+def getMecha():
+  try:
+    site = urllib.request.urlopen("https://www.seventhsanctum.com/generate.php?Genname=mechamaker")
+    siteStr = site.read().decode('utf-8')
+
+    siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+    siteHtml = ''.join(siteHtml).strip('\n\r\t')
+    mechas = removeHtmlTags(
+      ['<div class="GeneratorResultPrimeBGPara">',
+        '<div class="GeneratorResultSecondaryBGPara">'],
+        '</div>',
+        siteHtml)
+    shuffleList(mechas)
+    retLst = [mechas[0], mechas[1], mechas[2]]
+    return retLst
+  except:
+    return ["Error"]
 
 def getRealAlignment():
   try:
@@ -27,7 +49,8 @@ def getRealAlignment():
          '</div>',
          siteHtml)
 
-      retLst = random.choices(alignments, k=3)
+      shuffleList(alignments)
+      retLst = [alignments[0], alignments[1], alignments[2]]
       return retLst
   except:
     return ["Error"]
@@ -35,12 +58,20 @@ def getRealAlignment():
 
 def artPrompt(promptType):
     try:
-        retLst = getRealAlignment() if promptType == "alignment" else getMecha() if promptType == "mecha" else "Invalid prompt type!"
+      retLst = []
+      if promptType == "alignment":
+        retLst = getRealAlignment()
+      elif promptType == "mecha":
+        retLst = getMecha()
+      elif promptType == "dnd":
+        retLst = getDND()
+      else:
+        retLst = ["Invalid prompt type!"]
 
-        return retLst
+      return retLst
     except:
         return ["Error"]
 
 
-print(artPrompt("alignment"))
+print(artPrompt("mecha"))
 # print(artPrompt("sdfsfd"))
