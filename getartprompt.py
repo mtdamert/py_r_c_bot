@@ -71,7 +71,3 @@ def artPrompt(promptType):
       return retLst
     except:
         return ["Error"]
-
-
-print(artPrompt("mecha"))
-# print(artPrompt("sdfsfd"))
