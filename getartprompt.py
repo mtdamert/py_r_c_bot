@@ -299,32 +299,32 @@ def artPrompt(promptType):
         retLst = []
         if promptType == "alignment":
             retLst = getRealAlignment()
-        elif promptType == "mecha":
-            retLst = getMecha()
-        elif promptType == "color":
-            retLst = getColor()
-        elif promptType == "generalperson":
-            retLst = getGeneralPerson()
-        elif promptType == "quickchar":
-            retLst = getQuickChar()
-        elif promptType == "creature":
-            retLst = getCreature()
-        elif promptType == "vampirename":
-            retLst = getVampireName()
-        elif promptType == "evilname":
-            retLst = getEvilName()
-        elif promptType == "tropescramble":
-            retLst = getTropeScramble()
-        elif promptType == "fantasyname":
-            retLst = getFantasyName()
-        elif promptType == "milunit":
-            retLst = getMilUnit()
         elif promptType == "animegirl":
             retLst = getAnimeGirl()
         elif promptType == "catgirl":
             retLst = getCatGirl()
+        elif promptType == "creature":
+            retLst = getCreature()
+        elif promptType == "color":
+            retLst = getColor()
+        elif promptType == "evilname":
+            retLst = getEvilName()
+        elif promptType == "fantasyname":
+            retLst = getFantasyName()
+        elif promptType == "generalperson":
+            retLst = getGeneralPerson()
         elif promptType == "location":
             retLst = getLocation()
+        elif promptType == "mecha":
+            retLst = getMecha()
+        elif promptType == "milunit":
+            retLst = getMilUnit()
+        elif promptType == "quickchar":
+            retLst = getQuickChar()
+        elif promptType == "tropescramble":
+            retLst = getTropeScramble()
+        elif promptType == "vampirename":
+            retLst = getVampireName()
         else:
             retLst = ["Invalid prompt type!"]
 
