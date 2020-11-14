@@ -216,7 +216,8 @@ def main():
                             sendmsg(msg)
                             time.sleep(3)
                     else:
-                        sendmsg('.artprompt <alignment/mecha/color>')
+                        sendmsg(
+                            '.artprompt <alignment/creature/color/fantasyname/generalperson/mecha/milunit/quickchar/tropescramble/vampirename>')
 
                 if message.find('.covid') != -1:
                     splitMsg = message.split(' ')

@@ -21,6 +21,141 @@ def removeHtmlTags(tags, splitTag, html):
     return retList
 
 
+def getTropeScramble():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=charscramble")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        tropeScramble = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBGPara">',
+            '<div class="GeneratorResultSecondaryBGPara">'
+        ], '</div>', siteHtml)
+        shuffleList(tropeScramble)
+        retLst = [tropeScramble[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getFantasyName():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=fantasynameex")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        fantasyName = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(fantasyName)
+        retLst = [fantasyName[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getMilUnit():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=fantasyunit")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        milUnit = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBGPara">',
+            '<div class="GeneratorResultSecondaryBGPara">'
+        ], '</div>', siteHtml)
+        shuffleList(milUnit)
+        retLst = [milUnit[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getGeneralPerson():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=generalperson")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        generalPerson = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBGPara">',
+            '<div class="GeneratorResultSecondaryBGPara">'
+        ], '</div>', siteHtml)
+        shuffleList(generalPerson)
+        generalPerson[0] = generalPerson[0].split('.')
+        generalPerson[0].pop()
+        retLst = [*generalPerson[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getVampireName():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=vampnamer")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        creatures = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(creatures)
+        retLst = [creatures[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getCreature():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=legendcreature")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        creatures = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBGPara">',
+            '<div class="GeneratorResultSecondaryBGPara">'
+        ], '</div>', siteHtml)
+        shuffleList(creatures)
+        retLst = [creatures[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getQuickChar():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=quickchar")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        quickChars = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(quickChars)
+        retLst = [quickChars[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
 def getColor():
     try:
         site = urllib.request.urlopen(
@@ -53,7 +188,7 @@ def getMecha():
             '<div class="GeneratorResultSecondaryBGPara">'
         ], '</div>', siteHtml)
         shuffleList(mechas)
-        retLst = [mechas[0], mechas[1], mechas[2]]
+        retLst = [mechas[0]]
         return retLst
     except:
         return ["Error"]
@@ -74,7 +209,7 @@ def getRealAlignment():
         ], '</div>', siteHtml)
 
         shuffleList(alignments)
-        retLst = [alignments[0], alignments[1], alignments[2]]
+        retLst = [alignments[0]]
         return retLst
     except:
         return ["Error"]
@@ -89,6 +224,20 @@ def artPrompt(promptType):
             retLst = getMecha()
         elif promptType == "color":
             retLst = getColor()
+        elif promptType == "generalperson":
+            retLst = getGeneralPerson()
+        elif promptType == "quickchar":
+            retLst = getQuickChar()
+        elif promptType == "creature":
+            retLst = getCreature()
+        elif promptType == "vampirename":
+            retLst = getVampireName()
+        elif promptType == "tropescramble":
+            retLst = getTropeScramble()
+        elif promptType == "fantasyname":
+            retLst = getFantasyName()
+        elif promptType == "milunit":
+            retLst = getMilUnit()
         else:
             retLst = ["Invalid prompt type!"]
 
