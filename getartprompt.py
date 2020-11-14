@@ -21,6 +21,63 @@ def removeHtmlTags(tags, splitTag, html):
     return retList
 
 
+def getLocation():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=advname")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        location = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(location)
+        retLst = [location[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getAnimeGirl():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=afb")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        animeGirl = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(animeGirl)
+        retLst = [animeGirl[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getEvilName():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=evilnamer")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        evilName = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(evilName)
+        retLst = [evilName[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
 def getTropeScramble():
     try:
         site = urllib.request.urlopen(
@@ -73,6 +130,28 @@ def getMilUnit():
         ], '</div>', siteHtml)
         shuffleList(milUnit)
         retLst = [milUnit[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
+def getCatGirl():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=catgirl")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        catGirl = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBGPara">',
+            '<div class="GeneratorResultSecondaryBGPara">',
+            '"'
+        ], '</div>', siteHtml)
+        shuffleList(catGirl)
+        catGirl[0] = catGirl[0].split('.')
+        catGirl[0].pop()
+        retLst = [*catGirl[0]]
         return retLst
     except:
         return ["Error"]
@@ -232,12 +311,20 @@ def artPrompt(promptType):
             retLst = getCreature()
         elif promptType == "vampirename":
             retLst = getVampireName()
+        elif promptType == "evilname":
+            retLst = getEvilName()
         elif promptType == "tropescramble":
             retLst = getTropeScramble()
         elif promptType == "fantasyname":
             retLst = getFantasyName()
         elif promptType == "milunit":
             retLst = getMilUnit()
+        elif promptType == "animegirl":
+            retLst = getAnimeGirl()
+        elif promptType == "catgirl":
+            retLst = getCatGirl()
+        elif promptType == "location":
+            retLst = getLocation()
         else:
             retLst = ["Invalid prompt type!"]
 
