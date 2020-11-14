@@ -212,12 +212,20 @@ def main():
                     if len(splitMsg) > 1:
                         promptType = splitMsg[1]
                         resLst = getartprompt.artPrompt(promptType)
-                        for msg in resLst:
-                            sendmsg(msg)
-                            time.sleep(3)
+                        if (len(resLst) > 1):
+                            for msg in resLst:
+                                sendmsg(msg, messagerName)
+                                time.sleep(3)
+                        else:
+                            for msg in resLst:
+                                sendmsg(msg)
+                                time.sleep(3)
                     else:
                         sendmsg(
-                            '.artprompt <alignment/animegirl/creature/catgirl/color/evilname/fantasyname/generalperson/location/mecha/milunit/quickchar/tropescramble/vampirename>')
+                            'One-line response: .artprompt <alignment/animegirl/creature/evilname/fantasyname/location/mecha/milunit/quickchar/tropescramble/vampirename>')
+                        time.sleep(3)
+                        sendmsg(
+                            'Multi-line: .artprompt <catgirl/color/generalperson>')
 
                 if message.find('.covid') != -1:
                     splitMsg = message.split(' ')
