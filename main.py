@@ -124,8 +124,9 @@ def main():
                     for word in splitMsg:
                         if word.find('http') == 0:
                             foundTitle = gettitle.getPageTitle(word)
-                            sendmsg(foundTitle)
-                            time.sleep(1)
+                            if foundTitle:
+                                sendmsg(foundTitle)
+                                time.sleep(1)
 
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
