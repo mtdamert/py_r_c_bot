@@ -8,6 +8,7 @@ from datetime import datetime
 import getweather
 import getdate
 import getfortune
+import gettitle
 import getskdtheme
 import random
 import time
@@ -26,9 +27,9 @@ import getlols
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
-# channel = "#bot-testing"
-channel = "#sketchdaily"
-botnick = "nizz"  # The bot's nickname
+channel = "#bot-testing"
+# channel = "#sketchdaily"
+botnick = "nizztest"  # The bot's nickname
 # My IRC nickname - change this to your username
 adminname = ["teapup", "ThereIsNoJustice"]
 exitcode = "bye " + botnick
@@ -117,6 +118,14 @@ def main():
                 #     response = str(response)
                 #     print(response)
                 #     sendmsg(response)
+
+                if message.find('http') != -1:
+                    splitMsg = message.split(' ')
+                    for word in splitMsg:
+                        if word.find('http') == 0:
+                            foundTitle = gettitle.getPageTitle(word)
+                            sendmsg(foundTitle)
+                            time.sleep(1)
 
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
@@ -227,7 +236,7 @@ def main():
                         sendmsg(
                             'Multi-line: .artprompt <catgirl/color/generalperson>')
 
-                if message.find('.covid') != -1:
+                if message.find('.covid') == 0:
                     splitMsg = message.split(' ')
                     if len(splitMsg) > 1:
                         try:
