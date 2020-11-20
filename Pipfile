@@ -7,10 +7,8 @@ verify_ssl = true
 
 [packages]
 python-dotenv = "*"
-chatterbot = "*"
 opencage = "*"
-chatterbot-corpus = "*"
-pyyaml = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3.8"
