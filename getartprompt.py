@@ -21,6 +21,25 @@ def removeHtmlTags(tags, splitTag, html):
     return retList
 
 
+def getTitle():
+    try:
+        site = urllib.request.urlopen(
+            "https://www.seventhsanctum.com/generate.php?Genname=weirdname")
+        siteStr = site.read().decode('utf-8')
+
+        siteHtml = siteStr.split('<!--Title -->')[2].split('<P>')[0]
+        siteHtml = ''.join(siteHtml).strip('\n\r\t')
+        location = removeHtmlTags([
+            '<div class="GeneratorResultPrimeBG">',
+            '<div class="GeneratorResultSecondaryBG">'
+        ], '</div>', siteHtml)
+        shuffleList(location)
+        retLst = [location[0]]
+        return retLst
+    except:
+        return ["Error"]
+
+
 def getLocation():
     try:
         site = urllib.request.urlopen(
@@ -321,6 +340,8 @@ def artPrompt(promptType):
             retLst = getMilUnit()
         elif promptType == "quickchar":
             retLst = getQuickChar()
+        elif promptType == "title":
+            retLst = getTitle()
         elif promptType == "tropescramble":
             retLst = getTropeScramble()
         elif promptType == "vampirename":

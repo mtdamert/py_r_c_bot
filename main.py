@@ -222,7 +222,7 @@ def main():
                                 time.sleep(3)
                     else:
                         sendmsg(
-                            'One-line response: .artprompt <alignment/animegirl/creature/evilname/fantasyname/location/mecha/milunit/quickchar/tropescramble/vampirename>')
+                            'One-line response: .artprompt <alignment/animegirl/creature/evilname/fantasyname/location/mecha/milunit/quickchar/title/tropescramble/vampirename>')
                         time.sleep(3)
                         sendmsg(
                             'Multi-line: .artprompt <catgirl/color/generalperson>')
