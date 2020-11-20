@@ -11,18 +11,18 @@ import getfortune
 import getskdtheme
 import random
 import time
-import msg
+import getmessages
+import getartprompt
 from getcovid import getCovidData
 import getlols
 
-from chatterbot import ChatBot
-from chatterbot.trainers import ChatterBotCorpusTrainer
+# from chatterbot import ChatBot
+# from chatterbot.trainers import ChatterBotCorpusTrainer
 
 # create the chatbot
-chatbot = ChatBot('Nizz')
-trainer = ChatterBotCorpusTrainer(chatbot)
-trainer.train("chatterbot.corpus.english")
-
+# chatbot = ChatBot('Nizz')
+# trainer = ChatterBotCorpusTrainer(chatbot)
+# trainer.train("chatterbot.corpus.english")
 
 ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = "chat.freenode.net"
@@ -61,8 +61,10 @@ def main():
     print(" > > > Beginning IRC bot")
     # connect to the server using the port 6667 (the standard IRC port)
     ircsock.connect((server, 6667))
-    ircsock.send(bytes("USER " + botnick + " " + botnick +
-                       " " + botnick + " " + botnick + "\n", "UTF-8"))
+    ircsock.send(
+        bytes(
+            "USER " + botnick + " " + botnick + " " + botnick + " " + botnick +
+            "\n", "UTF-8"))
     # assign the nick to the bot
     ircsock.send(bytes("NICK " + botnick + "\n", "UTF-8"))
     print(" > > > Server joined")
@@ -78,26 +80,29 @@ def main():
 
         if ircmsg.find("JOIN") != -1:
             # print(f'found join for username {name}')
-            if msg.userHasMsg(messagerName):
-                for messageNum in msg.msgDict[messagerName]:
-                    message = msg.msgDict[messagerName][messageNum]
+            if getmessages.userHasMsg(messagerName):
+                for messageNum in getmessages.msgDict[messagerName]:
+                    message = getmessages.msgDict[messagerName][messageNum]
                     fromUser = message['from']
                     receivedMsg = message['msg']
                     sendmsg(f'{fromUser}: {receivedMsg}', messagerName)
                     time.sleep(5)
-                del msg.msgDict[messagerName]
+                del getmessages.msgDict[messagerName]
                 time.sleep(5)
                 sendmsg('these messages have self-destructed', messagerName)
-                msg.saveMsgs()
+                getmessages.saveMsgs()
 
         if ircmsg.find("PRIVMSG") != -1:
             message = ircmsg.split('PRIVMSG', 1)[1].split(':', 1)[1]
             if len(messagerName) < 17:
 
                 # respond to 'hi <botname>'
-                if message.find('hi ' + botnick) != -1 or message.find('hello ' + botnick) != -1 or message.find('hey ' + botnick) != -1:
+                if message.find('hi ' + botnick) != -1 or message.find(
+                        'hello ' +
+                        botnick) != -1 or message.find('hey ' + botnick) != -1:
                     sendmsg("Hello " + messagerName + "!")
-                elif messagerName in adminname and message.rstrip() == exitcode:  # quit with <exitcode>
+                elif messagerName in adminname and message.rstrip(
+                ) == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
                     ircsock.send(bytes("QUIT\n", "UTF-8"))
                     return
@@ -105,13 +110,13 @@ def main():
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # use '..' to chat with the bot
-                if message.find('..') == 0:
-                    # get a response from chatbot
-                    msgNoPeriods = message.split('.')[2]
-                    response = chatbot.get_response(msgNoPeriods)
-                    response = str(response)
-                    print(response)
-                    sendmsg(response)
+                # if message.find('..') == 0:
+                #     # get a response from chatbot
+                #     msgNoPeriods = message.split('.')[2]
+                #     response = chatbot.get_response(msgNoPeriods)
+                #     response = str(response)
+                #     print(response)
+                #     sendmsg(response)
 
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
@@ -131,15 +136,19 @@ def main():
                             message = target.split(' ', 1)[1]
                             target = target.split(' ')[0]
                             if (len(message) > 0):
-                                msg.addMsg(target, messagerName, message)
+                                getmessages.addMsg(
+                                    target, messagerName, message)
                                 sendmsg(
-                                    f'your message has been stored until I see {target} join')
+                                    f'your message has been stored until I see {target} join'
+                                )
                             else:
                                 sendmsg(
-                                    "message should be sent in format: '.msg [target] [message]'")
+                                    "message should be sent in format: '.msg [target] [message]'"
+                                )
                     except:
                         sendmsg(
-                            "message should be sent in format: '.msg [target] [message]'")
+                            "message should be sent in format: '.msg [target] [message]'"
+                        )
 
                 if message.find('.date') == 0:
                     # print("printing date")
@@ -152,7 +161,7 @@ def main():
                 if message.find(".ftoc") == 0:
                     try:
                         f = int(message.split(' ')[1])
-                        c = (f-32)/1.8
+                        c = (f - 32) / 1.8
                         c = format(c, ',.2f')
                         sendmsg(f"{f}f is {c}c")
                     except:
@@ -174,23 +183,49 @@ def main():
                     msgArrCommaSplit = msgArrJoined.split(',')
                     # print(msgArrSplit)
                     if len(msgArrCommaSplit) == 1:
-                        yesNos = ["yeah do it", "do it right now",
-                                    "definitely", "absolutely",
-                                    "that's the best idea you've ever had", "i order you to do it",
-                                  "no i don't think so", "terrible idea",
-                                  "why even ask such a thing", "eww no",
-                                  "pft no", "i order you to do something else"]
+                        yesNos = [
+                            "yeah do it", "do it right now", "definitely",
+                            "absolutely",
+                            "that's the best idea you've ever had",
+                            "i order you to do it", "no i don't think so",
+                            "terrible idea", "why even ask such a thing",
+                            "eww no", "pft no",
+                            "i order you to do something else"
+                        ]
                         sendmsg(random.choice(yesNos))
                     elif len(msgArrCommaSplit) > 1:
                         # print(msgArrCommaSplit)
                         chosen = random.choice(msgArrCommaSplit)
-                        preMsg = random.choice(
-                            ["i like this one", "sounds cool", "the best", "be a good human", "embrace obedience to your robot masters"])
+                        preMsg = random.choice([
+                            "i like this one", "sounds cool", "the best",
+                            "be a good human",
+                            "embrace obedience to your robot masters"
+                        ])
                         messageToSend = f"{preMsg}: {chosen.strip()}"
                         # print(messageToSend)
                         sendmsg(messageToSend)
                     else:
                         sendmsg("you need to give me choices!!")
+
+                if message.find('.artprompt') == 0:
+                    splitMsg = message.split(' ')
+                    if len(splitMsg) > 1:
+                        promptType = splitMsg[1]
+                        resLst = getartprompt.artPrompt(promptType)
+                        if (len(resLst) > 1):
+                            for msg in resLst:
+                                sendmsg(msg, messagerName)
+                                time.sleep(3)
+                        else:
+                            for msg in resLst:
+                                sendmsg(msg)
+                                time.sleep(3)
+                    else:
+                        sendmsg(
+                            'One-line response: .artprompt <alignment/animegirl/creature/evilname/fantasyname/location/mecha/milunit/quickchar/title/tropescramble/vampirename>')
+                        time.sleep(3)
+                        sendmsg(
+                            'Multi-line: .artprompt <catgirl/color/generalperson>')
 
                 if message.find('.covid') != -1:
                     splitMsg = message.split(' ')
@@ -202,8 +237,10 @@ def main():
                         except:
                             try:
                                 countrycode = splitMsg[1].upper()
-                                reqDict = {"type": "countrycode",
-                                           "code": countrycode}
+                                reqDict = {
+                                    "type": "countrycode",
+                                    "code": countrycode
+                                }
                                 sendmsg(getCovidData(reqDict))
                             except:
                                 sendmsg('Something went wrong')
@@ -257,8 +294,9 @@ def main():
                     else:
                         lol = splitmsg[1].strip()
                         if lol != "":
-                            sendmsg(getlols.addlol(
-                                lol, messagerName, datetime.utcnow()))
+                            sendmsg(
+                                getlols.addlol(lol, messagerName,
+                                               datetime.utcnow()))
                         else:
                             sendmsg("which lol are you looking for?")
                 elif message.find('.searchlol') == 0:
@@ -303,7 +341,8 @@ def main():
                 # list of commands
                 if message.find('.help') == 0:
                     sendmsg(
-                        "COMMANDS: .addloc .addlol .lol .searchlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather")
+                        "COMMANDS: .addloc .addlol .lol .searchlol .covid .choose .ctof/.ftoc .date .fortune .hotdog .getskdtheme .weather"
+                    )
 
         else:
             if ircmsg.find("PING :") != -1:
