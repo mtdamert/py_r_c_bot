@@ -110,6 +110,10 @@ def main():
                 elif message.find(botnick) != -1 and random.randint(1, 5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
+                # respond to 'morning <botname>'
+                if message.find('morning ' + botnick):
+                    sendmsg("morning " + messagerName + "!")
+
                 # use '..' to chat with the bot
                 # if message.find('..') == 0:
                 #     # get a response from chatbot
