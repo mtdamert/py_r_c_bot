@@ -95,6 +95,10 @@ def main():
                 elif message.find(botnick) != -1 and random.randint(1,5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
+                # respond to 'morning <botname>'
+                if message.find('morning ' + botnick):
+                    sendmsg("morning " + messagerName + "!")
+
                 # use '.tell' to send someone a message
                 if message.find('.tell') == 0:
                     target = message.split(' ', 1)[1]
