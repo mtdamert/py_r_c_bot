@@ -2,7 +2,7 @@ import random
 import os
 from datetime import datetime
 
-lols_file_loc = '.\\data\\lols.txt'
+lols_file_loc = './data/lols.txt'
 all_lols = {}
 
 def load():
