@@ -363,4 +363,8 @@ def main():
                 ping()
 
 
-main()
+while True:
+    main()
+    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    print('Waiting to attempt rejoin')
+    time.sleep(120)
