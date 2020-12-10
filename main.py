@@ -111,7 +111,7 @@ def main():
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # respond to 'morning <botname>'
-                if message.find('morning ' + botnick):
+                if message.find('morning ' + botnick) != -1:
                     sendmsg("morning " + messagerName + "!")
 
                 # use '..' to chat with the bot
