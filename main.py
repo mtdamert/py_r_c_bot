@@ -5,7 +5,7 @@ import socket
 import time
 from datetime import datetime
 # my files
-import getweather
+# import getweather
 import getdate
 import getfortune
 import gettitle
@@ -111,7 +111,7 @@ def main():
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
 
                 # respond to 'morning <botname>'
-                if message.find('morning ' + botnick):
+                if message.find('morning ' + botnick) != -1:
                     sendmsg("morning " + messagerName + "!")
 
                 # use '..' to chat with the bot
@@ -277,16 +277,16 @@ def main():
                     else:
                         sendmsg('.addloc <location name>, <lat>, <lon>')
 
-                if message.find(".weather") == 0:
-                    # print("printing weather")
-                    splitmsg = message.lower().split(' ')
-                    splitmsg.pop(0)
-                    splitmsg
-                    cityName = ' '.join(splitmsg)
-                    if len(splitmsg) >= 1:
-                        sendmsg(getweather.printweather(cityName))
-                    else:
-                        sendmsg('.weather <location name>')
+                # if message.find(".weather") == 0:
+                #     # print("printing weather")
+                #     splitmsg = message.lower().split(' ')
+                #     splitmsg.pop(0)
+                #     splitmsg
+                #     cityName = ' '.join(splitmsg)
+                #     if len(splitmsg) >= 1:
+                #         sendmsg(getweather.printweather(cityName))
+                #     else:
+                #         sendmsg('.weather <location name>')
 
                 if message.find(".fortune") == 0:
                     # print("printing fortune")
