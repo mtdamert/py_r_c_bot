@@ -3,7 +3,7 @@
 
 import socket
 import time
-from datetime import datetime
+import datetime
 # my files
 # import getweather
 import getdate
@@ -11,7 +11,6 @@ import getfortune
 import gettitle
 import getskdtheme
 import random
-import time
 import getmessages
 import getartprompt
 from getcovid import getCovidData
@@ -34,6 +33,18 @@ botnick = "nizztest"  # The bot's nickname
 adminname = ["teapup", "ThereIsNoJustice"]
 exitcode = "bye " + botnick
 
+savedTime = datetime.datetime.now()
+restartTime = savedTime + datetime.timedelta(minutes=10)
+
+
+def updateTimes():
+    savedTime = datetime.datetime.now()
+    restartTime = savedTime + datetime.timedelta(minutes=10)
+
+
+def updateSavedTime():
+    savedTime = datetime.datetime.now()
+
 
 def joinchannel(chan):
     ircsock.send(bytes("JOIN " + chan + "\n", "UTF-8"))
@@ -48,10 +59,15 @@ def joinchannel(chan):
 
 def ping():  # respond to server Pings
     ircsock.send(bytes("PONG :pingisn\n", "UTF-8"))
+    updateTimes()
 
 
 def sendmsg(msg, target=channel):  # sends messages to the target
     ircsock.send(bytes("PRIVMSG " + target + " :" + msg + "\n", "UTF-8"))
+
+
+def quit():
+    ircsock.send(bytes("QUIT\n", "UTF-8"))
 
 
 def main():
@@ -72,6 +88,11 @@ def main():
 
     joinchannel(channel)
     while 1:
+        updateSavedTime()
+        if savedTime > restartTime:
+            quit()
+            return
+
         ircmsg = ircsock.recv(2048).decode("UTF-8")
         ircmsg = ircmsg.strip('\n\r')
         if (ircmsg.strip() != ""):
@@ -105,7 +126,7 @@ def main():
                 elif messagerName in adminname and message.rstrip(
                 ) == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
-                    ircsock.send(bytes("QUIT\n", "UTF-8"))
+                    quit()
                     return
                 elif message.find(botnick) != -1 and random.randint(1, 5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
@@ -122,6 +143,9 @@ def main():
                 #     response = str(response)
                 #     print(response)
                 #     sendmsg(response)
+
+                if message.find('.restart') != -1:
+                    return
 
                 if message.find('http') != -1:
                     splitMsg = message.split(' ')
@@ -310,7 +334,7 @@ def main():
                         if lol != "":
                             sendmsg(
                                 getlols.addlol(lol, messagerName,
-                                               datetime.utcnow()))
+                                               datetime.datetime.utcnow()))
                         else:
                             sendmsg("which lol are you looking for?")
                 elif message.find('.searchlol') == 0:
@@ -365,6 +389,5 @@ def main():
 
 while True:
     main()
-    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print('Waiting to attempt rejoin')
-    time.sleep(120)
+    raise Exception('Exiting')
