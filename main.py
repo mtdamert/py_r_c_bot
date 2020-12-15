@@ -144,8 +144,8 @@ def main():
                 #     print(response)
                 #     sendmsg(response)
 
-                if message.find('.restart') != -1:
-                    return
+                # if message.find('.restart') != -1:
+                #     return
 
                 if message.find('http') != -1:
                     splitMsg = message.split(' ')
