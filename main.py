@@ -33,18 +33,6 @@ botnick = "nizztest"  # The bot's nickname
 adminname = ["teapup", "ThereIsNoJustice"]
 exitcode = "bye " + botnick
 
-savedTime = datetime.datetime.now()
-restartTime = savedTime + datetime.timedelta(minutes=10)
-
-
-def updateTimes():
-    savedTime = datetime.datetime.now()
-    restartTime = savedTime + datetime.timedelta(minutes=10)
-
-
-def updateSavedTime():
-    savedTime = datetime.datetime.now()
-
 
 def joinchannel(chan):
     ircsock.send(bytes("JOIN " + chan + "\n", "UTF-8"))
@@ -58,8 +46,8 @@ def joinchannel(chan):
 
 
 def ping():  # respond to server Pings
+    time.sleep(1)
     ircsock.send(bytes("PONG :pingisn\n", "UTF-8"))
-    updateTimes()
 
 
 def sendmsg(msg, target=channel):  # sends messages to the target
@@ -88,11 +76,6 @@ def main():
 
     joinchannel(channel)
     while 1:
-        updateSavedTime()
-        if savedTime > restartTime:
-            quit()
-            return
-
         ircmsg = ircsock.recv(2048).decode("UTF-8")
         ircmsg = ircmsg.strip('\n\r')
         if (ircmsg.strip() != ""):
@@ -383,6 +366,10 @@ def main():
                     )
 
         else:
+            if ircmsg.find("ERROR :Closing Link:") != -1:
+                print("Ping timeout? Restarting...")
+                return
+
             if ircmsg.find("PING :") != -1:
                 ping()
 
