@@ -3,15 +3,14 @@
 
 import socket
 import time
-from datetime import datetime
+import datetime
 # my files
-import getweather
+# import getweather
 import getdate
 import getfortune
 import gettitle
 import getskdtheme
 import random
-import time
 import getmessages
 import getartprompt
 from getcovid import getCovidData
@@ -47,11 +46,16 @@ def joinchannel(chan):
 
 
 def ping():  # respond to server Pings
+    time.sleep(1)
     ircsock.send(bytes("PONG :pingisn\n", "UTF-8"))
 
 
 def sendmsg(msg, target=channel):  # sends messages to the target
     ircsock.send(bytes("PRIVMSG " + target + " :" + msg + "\n", "UTF-8"))
+
+
+def quit():
+    ircsock.send(bytes("QUIT\n", "UTF-8"))
 
 
 def main():
@@ -105,7 +109,7 @@ def main():
                 elif messagerName in adminname and message.rstrip(
                 ) == exitcode:  # quit with <exitcode>
                     sendmsg("oh...okay. :-/")
-                    ircsock.send(bytes("QUIT\n", "UTF-8"))
+                    quit()
                     return
                 elif message.find(botnick) != -1 and random.randint(1, 5) == 1:
                     sendmsg("╚═།-◑-▃-◑-།═╝ beep boop")
@@ -122,6 +126,9 @@ def main():
                 #     response = str(response)
                 #     print(response)
                 #     sendmsg(response)
+
+                # if message.find('.restart') != -1:
+                #     return
 
                 if message.find('http') != -1:
                     splitMsg = message.split(' ')
@@ -277,16 +284,16 @@ def main():
                     else:
                         sendmsg('.addloc <location name>, <lat>, <lon>')
 
-                if message.find(".weather") == 0:
-                    # print("printing weather")
-                    splitmsg = message.lower().split(' ')
-                    splitmsg.pop(0)
-                    splitmsg
-                    cityName = ' '.join(splitmsg)
-                    if len(splitmsg) >= 1:
-                        sendmsg(getweather.printweather(cityName))
-                    else:
-                        sendmsg('.weather <location name>')
+                # if message.find(".weather") == 0:
+                #     # print("printing weather")
+                #     splitmsg = message.lower().split(' ')
+                #     splitmsg.pop(0)
+                #     splitmsg
+                #     cityName = ' '.join(splitmsg)
+                #     if len(splitmsg) >= 1:
+                #         sendmsg(getweather.printweather(cityName))
+                #     else:
+                #         sendmsg('.weather <location name>')
 
                 if message.find(".fortune") == 0:
                     # print("printing fortune")
@@ -310,7 +317,7 @@ def main():
                         if lol != "":
                             sendmsg(
                                 getlols.addlol(lol, messagerName,
-                                               datetime.utcnow()))
+                                               datetime.datetime.utcnow()))
                         else:
                             sendmsg("which lol are you looking for?")
                 elif message.find('.searchlol') == 0:
@@ -359,12 +366,15 @@ def main():
                     )
 
         else:
+            if ircmsg.find("ERROR :Closing Link:") != -1:
+                print("Ping timeout? Restarting...")
+                return
+
             if ircmsg.find("PING :") != -1:
                 ping()
 
 
 while True:
     main()
-    ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print('Waiting to attempt rejoin')
-    time.sleep(120)
+    raise Exception('Exiting')

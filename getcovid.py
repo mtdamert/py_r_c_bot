@@ -26,14 +26,22 @@ def getCovidData(reqObj):
         print(reqObj['code'])
         try:
             data = urllib.request.urlopen(
-                f"https://localcoviddata.com/covid19/v1/cases/eucdc?country={reqObj['code']}&daysInPast=5")
+                f"https://covid19-api.org/api/timeline/{reqObj['code']}")
             cData = json.loads(data.read())
             # print(json.dumps(cData, indent=4, sort_keys=True))
-            countryName = cData["countryName"]
-            days = cData["historicData"]
-            returnStr = f"{countryName}, date/daily dead/daily infected: "
+            countryName = cData[0]["country"]
+
+            days = []
+            for i in range(5):
+                days.append(cData[i])
+
+            returnStr = f"{countryName}, date/dead/infected: "
             for day in days:
-                returnStr += f"{day['date']} / {withCommas(day['deathCt'])} / {withCommas(day['reportedCt'])} ||| "
+                day['last_update'] = day['last_update'].split('-')
+                day['last_update'].pop(0)
+                day['last_update'] = '-'.join(day['last_update'])
+                day['last_update'] = day['last_update'].split('T')[0]
+                returnStr += f"{day['last_update']} / {withCommas(day['deaths'])} / {withCommas(day['cases'])} ||| "
             return returnStr
         except:
             return "Something went wrong with the country code."
